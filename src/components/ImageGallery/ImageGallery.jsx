@@ -37,7 +37,7 @@ export const ImageGallery = ({ query, onSetLargeImgUrl }) => {
         setError(error);
         setStatus('rejected');
       });
-  }, [page]);
+  }, [page, query]);
 
   const onFirstTimeLoad = data => {
     setImages(data);
