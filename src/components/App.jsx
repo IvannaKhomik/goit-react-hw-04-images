@@ -14,7 +14,6 @@ export const App = () => {
     setLargeImgUrl(image);
     setTag(tag);
   };
-
   return (
     <Container>
       <Searchbar searchByQuery={setQuery} />
@@ -30,7 +29,7 @@ export const App = () => {
         <Modal
           url={largeImgUrl}
           tag={tag}
-          onCloseModal={setLargeImgUrl(null)}
+          onCloseModal={() => setLargeImgUrl(null)}
         />
       )}
     </Container>
