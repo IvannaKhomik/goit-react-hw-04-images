@@ -5,50 +5,42 @@ import { Gallery, Error } from './ImageGallery.styled';
 import { Loader } from '../Loader';
 import { getImages } from '../../requests';
 
-export const ImageGallery = ({ query, onSetLargeImgUrl }) => {
+export const ImageGallery = ({ query, onSetLargeImgUrl, page, setPage }) => {
   const [images, setImages] = useState([]);
   const [error, setError] = useState(null);
   const [status, setStatus] = useState('');
   const [load, setLoad] = useState(false);
-  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (!query) {
       return;
     }
-    setPage(1);
     setStatus('pending');
-    getImages(query)
-      .then(res => onFirstTimeLoad(res.hits))
-      .catch(error => {
-        setError(error);
-        setStatus('rejected');
-      });
   }, [query]);
 
   useEffect(() => {
-    if (page === 1) {
+    if (!query) {
       return;
     }
-    setLoad(true);
+    if (page > 1) {
+      setLoad(true);
+    }
     getImages(query, page)
-      .then(res => onLoadMoreImages(res.hits))
+      .then(res => {
+        if (page === 1) {
+          setImages(res.hits);
+          setStatus('resolved');
+          return;
+        }
+        setImages(images => [...images, ...res.hits]);
+        setLoad(false);
+        setStatus('resolved');
+      })
       .catch(error => {
         setError(error);
         setStatus('rejected');
       });
-  }, [page, query]);
-
-  const onFirstTimeLoad = data => {
-    setImages(data);
-    setStatus('resolved');
-  };
-
-  const onLoadMoreImages = data => {
-    setImages(images => [...images, ...data]);
-    setLoad(false);
-    setStatus('resolved');
-  };
+  }, [query, page]);
 
   const onClickLoadBtn = () => {
     setPage(page => page + 1);

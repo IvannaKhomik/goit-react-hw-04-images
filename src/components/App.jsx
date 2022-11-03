@@ -9,6 +9,7 @@ export const App = () => {
   const [query, setQuery] = useState('');
   const [largeImgUrl, setLargeImgUrl] = useState(null);
   const [tag, setTag] = useState(null);
+  const [page, setPage] = useState(1);
 
   const onSetLargeImgUrl = (image, tag) => {
     setLargeImgUrl(image);
@@ -16,7 +17,7 @@ export const App = () => {
   };
   return (
     <Container>
-      <Searchbar searchByQuery={setQuery} />
+      <Searchbar searchByQuery={setQuery} setPage={setPage} />
       <Toaster
         position="top-center"
         reverseOrder={true}
@@ -24,7 +25,12 @@ export const App = () => {
           duration: 2000,
         }}
       />
-      <ImageGallery onSetLargeImgUrl={onSetLargeImgUrl} query={query} />
+      <ImageGallery
+        onSetLargeImgUrl={onSetLargeImgUrl}
+        query={query}
+        page={page}
+        setPage={setPage}
+      />
       {largeImgUrl && (
         <Modal
           url={largeImgUrl}

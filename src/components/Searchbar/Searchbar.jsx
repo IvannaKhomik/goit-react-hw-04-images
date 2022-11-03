@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 import { Header, SearchForm, SearchBtn, SearchField } from './Searchbar.styled';
 
-export const Searchbar = ({ searchByQuery }) => {
+export const Searchbar = ({ searchByQuery, setPage }) => {
   const [query, setQuery] = useState('');
 
   const onInputChange = e => {
@@ -19,6 +19,7 @@ export const Searchbar = ({ searchByQuery }) => {
     }
     searchByQuery(query);
     setQuery('');
+    setPage(1);
   };
 
   return (
